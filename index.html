@@ -742,6 +742,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+// fungsi untuk paksa kembali ke loading
+function showLoadingFirst() {
+  document.querySelectorAll('.popup').forEach(el => {
+    el.style.display = 'none';
+  });
+
+  document.querySelector('.loadinglogin').style.display = 'flex';
+
+  setTimeout(function() {
+    document.querySelector('.loadinglogin').style.display = 'none';
+    document.querySelector('.account_login').style.display = 'flex';
+  }, 3000);
+}
+
+// pertama kali load
+document.addEventListener("DOMContentLoaded", showLoadingFirst);
+
+// saat rotate HP
+window.addEventListener("orientationchange", function() {
+  showLoadingFirst();
+});
+
 function initScrollingBanners() {
   const banners = document.querySelectorAll('.item-name-banner');
   
