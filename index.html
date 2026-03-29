@@ -718,6 +718,13 @@ document.querySelectorAll('.popup').forEach(el => {
   el.style.display = 'none';
 });
 document.querySelector('.loadinglogin').style.display = 'flex';
+
+setTimeout(function() {
+  document.querySelector('.loadinglogin').style.display = 'none';
+  document.querySelector('.account_login').style.display = 'flex';
+}, 3000); // 3 detik
+
+
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
