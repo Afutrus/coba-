@@ -3298,3 +3298,50 @@ h1 {
     margin-top: 0rem;
 	margin-bottom: 0.4375rem;
 }
+
+/* MODE LANDSCAPE HP */
+@media screen and (orientation: landscape) and (max-width: 900px) {
+
+  /* popup jadi full layar */
+  .popup,
+  .popup-login {
+    width: 100% !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* box login full layar */
+  .popup-box-login-fb,
+  .popup-box-login-twitter,
+  .popup-box-login-google {
+    width: 100% !important;
+    height: 100vh !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* isi scroll kalau kepanjangan */
+  .content-box-fb,
+  .content-box-twitter,
+  .box-google {
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  .popup {
+    backdrop-filter: none !important;
+    background: #000 !important;
+  }
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
